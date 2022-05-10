@@ -27,6 +27,12 @@ jobs:
           cache: 'pip'
       - name: 'Set up Environment - install requirements'
         run: pip install -r requirements.txt
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - name: 'Check AWS CDK diff'
         run: cdk diff
 
