@@ -14,12 +14,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: 'Set up Environment'
+      - name: 'Set up Environment - Python 3'
         uses: actions/setup-python@v3
         with:
           python-version: '3.9'
           architecture: 'x64' 
           cache: 'pip'
+      - name: 'Set up Environment - install requirements'
         run: pip install -r requirements.txt
 
 
