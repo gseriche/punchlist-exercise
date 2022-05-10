@@ -8,7 +8,23 @@ This exercise will be to take an existing application and:
 
 ## How to test the code in Local
 
-To test in local this code you must "export" the 
+To test in local this code you must "export" the variables or use the command `aws configure` to get the keys for AWS.
+
+The account you will use with AWS CDK must have this permissions: 
+
+- cloudformation:DescribeStacks
+- cloudformation:CreateChangeSet
+- cloudformation:DescribeChangeSet
+- cloudformation:ExecuteChangeSet
+- cloudformation:DescribeStackEvents
+- cloudformation:DeleteChangeSet
+- cloudformation:GetTemplate
+- arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/CDKToolkit/*
+- s3:*Object
+- s3:ListBucket
+- s3:GetBucketLocation
+
+After that you should get the Access Key and secrets to deploy in AWS.
 
 ~~~bash
 export AWS_ACCESS_KEY_ID=
@@ -16,6 +32,23 @@ export AWS_SECRET_ACCESS_KEY=
 export AWS_DEFAULT_REGION=us-west-2
 ~~~
 
+To install AWS CDK you must have node installed.
+
+~~~bash
+npm install -g aws-cdk
+~~~
+
+Then you can try the code with
+
+~~~bash
+cdk bootstrap
+~~~~
+
+After that you can deploy:
+
+~~~bash
+cdk deploy
+~~~
 
 ## How to test the code in GitHub Action
 
@@ -26,6 +59,5 @@ You must create 3 secrets environment variables called:
 - AWS_DEFAULT_REGION
 
 The three first variables must have the same condition explained in the first
-paragraph, after that you should create a SSH_KEY variable having your private
-key and get access to the repository, this variables was used inside the folder
-".github/workflows" in the file called "terratest-action.yml"
+paragraph, this variables was used inside the folder
+".github/workflows" in the file called "aws-cdk.yml"
