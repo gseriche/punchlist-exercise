@@ -4,7 +4,7 @@ on:
 
 
 jobs:
-  test:
+  aws_cdk:
     runs-on: ubuntu-latest
     env:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -35,4 +35,7 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - name: 'Check AWS CDK diff'
         run: cdk diff
-
+      - name: 'AWS CDK Synth stack'
+        run: cdk synth
+      - name: 'AWS CDK Deploy stack'
+        run: cdk deploy --all --require-approval never
