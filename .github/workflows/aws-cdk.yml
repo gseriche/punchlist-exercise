@@ -22,5 +22,6 @@ jobs:
           cache: 'pip'
       - name: 'Set up Environment - install requirements'
         run: pip install -r requirements.txt
-
+      - name: 'Check AWS CDK diff'
+        run: cdk diff
 
