@@ -1,0 +1,41 @@
+name: Deploying with CDK
+on:
+  [push]
+
+
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+    env:
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: 'Install aws cdk'
+        run: npm install -g aws-cdk
+      - name: 'Set up Environment - Python 3'
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          architecture: 'x64' 
+          cache: 'pip'
+      - name: 'Set up Environment - install requirements'
+        run: pip install -r requirements.txt
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: 'Check AWS CDK diff'
+        run: cdk diff
+      - name: 'AWS CDK Synth stack'
+        run: cdk synth
+      - name: 'AWS CDK Deploy stack'
+        run: cdk deploy --all --require-approval never
